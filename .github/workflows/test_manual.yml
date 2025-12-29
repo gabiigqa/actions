@@ -1,0 +1,20 @@
+name: "Tests Manuales - Selección de servicio"
+
+on:
+  workflow_dispatch:
+    inputs:
+      servicio:
+        description: "Servicio a testear"
+        required: true
+
+jobs:
+  test-selected:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm install
+      - run: npm run test:${{ github.event.inputs.servicio }}
