@@ -1,0 +1,1 @@
+openapi-generator-cli generate -g typescript-node -i .\src\infrastructure\third-party\schema-bvnk.json -o .\src\infrastructure\third-party\.bvnk
