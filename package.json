@@ -3,18 +3,8 @@
   "version": "1.0.0",
   "main": "src/preloader.js",
   "private": true,
-  "workspaces": [
-    "accountService",
-    "authService",
-    "client",
-    "userService"
-  ],
   "scripts": {
-    "audit:user": "depcheck userService", 
-    "audit:auth": "depcheck authService", 
-    "audit:account": "depcheck accountService", 
-    "audit:client": "depcheck client", 
-    "audit:all": "depcheck accountService && depcheck authService && depcheck client && depcheck userService",
+    "audit:all": "depcheck domain",
     "prebuild:prod": "npm ci --include=dev",
     "prebuild": "",
     "build:prod": "npm run prebuild:prod && tsc --project tsconfig.json && npm run copy-assets",
@@ -28,10 +18,11 @@
     "validate-config": "ts-node -r tsconfig-paths/register scripts/validate-config.ts",
     "generate:docs": "ts-node -r tsconfig-paths/register src/infrastructure/docs/swagger/index.ts",
     "test": "jest",
-    "test:account": "npm run test --workspace accountService",
-    "test:auth": "npm run test --workspace authService",
-    "test:client": "npm run test --workspace client",
-    "test:user": "npm run test --workspace userService"
+    "test:account": "jest test/AccountService.test.ts",
+    "test:auth": "jest test/AuthService.test.ts",
+    "test:client": "jest test/Client.test.ts",
+    "test:user": "jest test/UserService.test.ts",
+    "test:auto": "node scripts/test-manager.mjs"
   },
   "dependencies": {
     "@azure/identity": "^4.13.0",
