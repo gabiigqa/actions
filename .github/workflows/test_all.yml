@@ -1,4 +1,4 @@
-name: "Tests Automáticos - Todos en paralelo"
+name: "Tests - Automático"
 
 on:
   push:
