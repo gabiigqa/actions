@@ -4,32 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       servicio:
-        description: "Servicio a testear"
-        required: true
-
-jobs:
-  test-selected:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-      - run: npm install
-      - run: npm run test:${{ github.event.inputs.servicio }}
-name: Test manual
-
-on:
-  workflow_dispatch:
-    inputs:
-      servicio:
         description: 'Servicio a testear (opcional). Ej: account, auth, client, user'
         required: false
       node-version:
         description: 'Node.js version to use'
         required: false
-        default: '18'
+        default: '20'
   push:
     branches:
       - main
@@ -41,14 +21,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ github.event.inputs.node-version || '18' }}
+          node-version: ${{ github.event.inputs.node-version || '20' }}
           cache: 'npm'
       - name: Install dependencies
         run: npm ci --include=dev --no-audit --progress=false
       - name: Run tests
         run: |
           if [ -n "${{ github.event.inputs.servicio }}" ]; then
-            # run single-package test (assumes scripts like test:account exist)
             npm run test:${{ github.event.inputs.servicio }}
           else
             npm test
