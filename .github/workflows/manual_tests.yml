@@ -1,14 +1,18 @@
-name: "Tests Manuales - Selección de servicio"
+name: "Tests - Manual"
 
 on:
   workflow_dispatch:
     inputs:
       servicio:
 <<<<<<< HEAD
+<<<<<<< HEAD
         description: 'Selecciona el servicio a testear'
 =======
         description: 'Servicio a testear'
 >>>>>>> 5a9fb3f94d3059ca21ea1f016131488e222bd266
+=======
+        description: 'Selecciona el servicio a testear'
+>>>>>>> main
         required: true
         type: choice
         options:
@@ -16,6 +20,7 @@ on:
           - auth
           - client
           - user
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
           - all
@@ -28,6 +33,8 @@ on:
     branches:
       - main
 >>>>>>> 5a9fb3f94d3059ca21ea1f016131488e222bd266
+=======
+>>>>>>> main
 
 jobs:
   test:
@@ -37,14 +44,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
 <<<<<<< HEAD
+<<<<<<< HEAD
           node-version: "20"
 =======
           node-version: ${{ github.event.inputs.node-version || '20' }}
 >>>>>>> 5a9fb3f94d3059ca21ea1f016131488e222bd266
+=======
+          node-version: "20"
+>>>>>>> main
           cache: 'npm'
       - name: Install dependencies
         run: npm ci --include=dev --no-audit --progress=false
       - name: Run tests
+<<<<<<< HEAD
 <<<<<<< HEAD
         run: npm run test:${{ github.event.inputs.servicio }}
 =======
@@ -55,5 +67,8 @@ jobs:
             npm run test:${{ github.event.inputs.servicio }}
           fi
 >>>>>>> 5a9fb3f94d3059ca21ea1f016131488e222bd266
+=======
+        run: npm run test:${{ github.event.inputs.servicio }}
+>>>>>>> main
         env:
           CI: true
