@@ -22,8 +22,8 @@ jobs:
       - name: Verify checkout
         run: |
           echo "Verifying package files..."
-          test -f package.json && echo "✓ package.json found"
-          test -f package-lock.json && echo "✓ package-lock.json found"
+          ls -la package.json package-lock.json
+          echo "✓ Files verified successfully"
       
       - uses: actions/setup-node@v4
         with:
