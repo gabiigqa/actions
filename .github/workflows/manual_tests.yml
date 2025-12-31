@@ -1,4 +1,4 @@
-name: "manual_tests"
+name: "Test - Manual"
 
 on:
   workflow_dispatch:
