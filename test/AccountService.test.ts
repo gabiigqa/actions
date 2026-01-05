@@ -1,5 +1,5 @@
 import { AccountService } from '@/domain/services/AccountService';
-import { ClientAccount, CreateClientAccountData } from '@/domain/interfaces/domain/entities/ClientAccount';
+import { ClientAccount } from '@/domain/interfaces/domain/entities/ClientAccount';
 import { ILoggerService } from '@/domain/interfaces/infrastructure/logger/ILoggerService';
 import { IClientAccountRepository } from '@/domain/interfaces/infrastructure/repositories/IClientAccountRepository';
 
@@ -15,67 +15,83 @@ const MOCK_DATA = {
         client_id: '1',
         name: 'Account 1',
         currency_id: 1,
-    } as CreateClientAccountData,
+    } as Partial<ClientAccount>,
 }
 
 describe('AccountService', () => {
     let service: AccountService;
-    let logger: jest.Mocked<ILoggerService>;
-    let accountRepository: jest.Mocked<IClientAccountRepository>;
+    let loggerMock: jest.Mocked<ILoggerService>;
+    let accountRepositoryMock: jest.Mocked<IClientAccountRepository>;
 
     beforeEach(() => {
-        logger = {
+        // Inicializamos mocks limpios
+        loggerMock = {
             info: jest.fn(),
             warn: jest.fn(),
             error: jest.fn(),
             debug: jest.fn(),
         } as unknown as jest.Mocked<ILoggerService>;
 
-        accountRepository = {
+        accountRepositoryMock = {
             getClientAccountById: jest.fn(),
             getClientAccountsByClientId: jest.fn(),
+            createClientAccount: jest.fn(),
+            updateClientAccount: jest.fn(),
         } as unknown as jest.Mocked<IClientAccountRepository>;
 
-        service = new AccountService(logger, accountRepository);
+        // Inyectamos
+        service = new AccountService(loggerMock, accountRepositoryMock);
     });
 
     describe('getAccountById', () => {
         test('retorna cuenta cuando existe', async () => {
-            accountRepository.getClientAccountById.mockResolvedValue(MOCK_DATA.account);
+            // GIVEN
+            accountRepositoryMock.getClientAccountById.mockResolvedValue(MOCK_DATA.account);
 
+            // WHEN
             const result = await service.getAccountById(MOCK_DATA.account.id);
 
+            // THEN
             expect(result).toEqual(MOCK_DATA.account);
-            expect(accountRepository.getClientAccountById).toHaveBeenCalledWith(MOCK_DATA.account.id);
+            expect(accountRepositoryMock.getClientAccountById).toHaveBeenCalledWith(MOCK_DATA.account.id);
         });
 
         test('retorna null cuando la cuenta no existe', async () => {
-            accountRepository.getClientAccountById.mockResolvedValue(null);
+            // GIVEN
+            accountRepositoryMock.getClientAccountById.mockResolvedValue(null);
 
+            // WHEN
             const result = await service.getAccountById('non-existent-id');
 
+            // THEN
             expect(result).toBeNull();
-            expect(accountRepository.getClientAccountById).toHaveBeenCalledWith('non-existent-id');
+            expect(accountRepositoryMock.getClientAccountById).toHaveBeenCalledWith('non-existent-id');
         });
     });
 
     describe('getAccountByClientId', () => {
         test('retorna lista de cuentas cuando el cliente tiene cuentas', async () => {
-            accountRepository.getClientAccountsByClientId.mockResolvedValue([MOCK_DATA.account]);
+            // GIVEN
+            accountRepositoryMock.getClientAccountsByClientId.mockResolvedValue([MOCK_DATA.account]);
 
+            // WHEN
             const result = await service.getAccountByClientId(MOCK_DATA.account.client_id);
 
+            // THEN
             expect(result).toEqual([MOCK_DATA.account]);
-            expect(accountRepository.getClientAccountsByClientId).toHaveBeenCalledWith(MOCK_DATA.account.client_id);
+            expect(accountRepositoryMock.getClientAccountsByClientId).toHaveBeenCalledWith(MOCK_DATA.account.client_id);
         });
 
         test('retorna array vacío cuando el cliente no tiene cuentas', async () => {
-            accountRepository.getClientAccountsByClientId.mockResolvedValue([]);
+            // GIVEN
+            accountRepositoryMock.getClientAccountsByClientId.mockResolvedValue([]);
 
+            // WHEN
             const result = await service.getAccountByClientId('non-existent-client-id');
 
+            // THEN
             expect(result).toEqual([]);
-            expect(accountRepository.getClientAccountsByClientId).toHaveBeenCalledWith('non-existent-client-id');
+            expect(accountRepositoryMock.getClientAccountsByClientId).toHaveBeenCalledWith('non-existent-client-id');
         });
     });
 });
