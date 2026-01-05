@@ -44,7 +44,7 @@ coverage/
 
 # Dependency lock files (comment out if needed)
 # package-lock.json
-package-lock.json
+# package-lock.json  # COMMENTED: Required for npm ci and GitHub Actions
 # yarn.lock
 
 # OS generated files

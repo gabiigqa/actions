@@ -18,12 +18,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Verify checkout
+        run: |
+          echo "Verifying package files..."
+          ls -la package.json package-lock.json
+          echo "✓ Files verified successfully"
+      
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+      
       - name: Install dependencies
-        run: npm ci --include=dev --no-audit --progress=false
+        run: npm ci --no-audit --progress=false
+      
       - name: Run tests
         run: npm run test:${{ github.event.inputs.servicio }}
         env:
