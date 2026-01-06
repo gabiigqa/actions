@@ -1,9 +1,7 @@
 name: "Test - Manual"
 
 on:
-  push:
-    branches:
-      - feature/actions
+
   workflow_dispatch:
     inputs:
       servicio:
