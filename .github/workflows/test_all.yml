@@ -4,9 +4,17 @@ on:
   push:
     branches:
       - feature/actions
+      - develop
+      - staging
+      - main
+      - master
   pull_request:
     branches:
       - feature/actions
+      - develop
+      - staging
+      - main
+      - master
   workflow_dispatch:
 
 jobs:
